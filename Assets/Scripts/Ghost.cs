@@ -61,7 +61,7 @@ public class Ghost : MonoBehaviour
         {
             animator.Play("GhostDefeat");
 
-            GameObject.Find("Global").GetComponent<GlobalScript>().AddPoints(2000 + (500 * GlobalScript.difficulty), true, transform);
+            GameObject.Find("Global").GetComponent<GlobalScript>().AddPoints(2000 + (500 * GlobalScript.difficulty), true, transform, false);
             target.GetComponent<Player>().StartCoroutine(target.GetComponent<Player>().Win());
             StartCoroutine(GameObject.Find("Global").GetComponent<GlobalScript>().MajorDeath(gameObject, sr, rb, true));
             Player.winLevel = true;

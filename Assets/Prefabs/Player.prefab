@@ -173,6 +173,7 @@ MonoBehaviour:
   clipShine: {fileID: 8300000, guid: ab77ff2f20eeb3545b162258e3a142d2, type: 3}
   clipPause: {fileID: 8300000, guid: cbf2c8bd182c4bf4092fe0758a94b84b, type: 3}
   clipJump: {fileID: 8300000, guid: bdfb4882dcf9ae1479f8940dceeff5f2, type: 3}
+  clipScoreTick: {fileID: 8300000, guid: c0a007cf2bca3fe4b9d9b3990ff29b2d, type: 3}
 --- !u!82 &883625049008672463
 AudioSource:
   m_ObjectHideFlags: 0

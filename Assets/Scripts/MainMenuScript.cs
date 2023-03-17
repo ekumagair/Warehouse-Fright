@@ -35,6 +35,7 @@ public class MainMenuScript : MonoBehaviour
         Player.lives = 3;
         Player.scoreForExtraLife = 8000;
         Player.sceneTime = 0;
+        GlobalScript.difficulty = 0;
         GlobalScript.gameIsInfinite = false;
 
         if (PlayerPrefs.HasKey("highScore_Normal"))

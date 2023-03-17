@@ -13,6 +13,8 @@ public class HUD : MonoBehaviour
     public Text pauseText;
     public Text extraLifeText;
     public GameObject musicObject;
+    public GameObject fakeLoadTop;
+    public GameObject fakeLoadBottom;
 
     AudioSource musicAudioSource;
     Player playerScript;
@@ -21,6 +23,12 @@ public class HUD : MonoBehaviour
     {
         musicAudioSource = musicObject.GetComponent<AudioSource>();
         playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+
+        if (fakeLoadTop != null && fakeLoadBottom != null)
+        {
+            Instantiate(fakeLoadTop, transform);
+            Instantiate(fakeLoadBottom, transform);
+        }
     }
 
     void Update()
@@ -29,8 +37,9 @@ public class HUD : MonoBehaviour
         livesText.text = Player.lives.ToString();
         stageText.text = Player.stageDisplay.ToString();
         timeText.text = Player.time.ToString();
-        extraLifeText.text = (Player.scoreForExtraLife / 1000).ToString() + "K=1-UP";
-        
+        //extraLifeText.text = (Player.scoreForExtraLife / 1000).ToString() + "K=1-UP";
+        extraLifeText.text = "1-UP=" + (Player.scoreForExtraLife / 1000).ToString() + "K";
+
         //extraLifeText.text = playerScript.moveInputX.ToString();
 
         // Time up text

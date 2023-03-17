@@ -15,7 +15,7 @@ public class GlobalScript : MonoBehaviour
     // Debug mode
     public static bool debug = false;
 
-    public void AddPoints(int points, bool createText, Transform baseTransform)
+    public void AddPoints(int points, bool createText, Transform baseTransform, bool avoidOverlap)
     {
         Player.score += points;
 
@@ -24,7 +24,24 @@ public class GlobalScript : MonoBehaviour
             var st = Instantiate(scoreText, baseTransform.position, baseTransform.rotation);
             st.transform.SetParent(GameObject.Find("Canvas").transform, false);
             st.transform.position = baseTransform.position;
+
+            // When jumping over obstacles, don't stack score text.
+            if (avoidOverlap)
+            {
+                st.transform.position += (baseTransform.up * Player.givePointsChainLinear / 2);
+            }
+
             st.GetComponent<Text>().text = points.ToString();
+
+            // Keep the text away from screen edges.
+            if (st.transform.position.x > 4)
+            {
+                st.transform.position = new Vector3(4, st.transform.position.y, st.transform.position.z);
+            }
+            else if (st.transform.position.x < -4)
+            {
+                st.transform.position = new Vector3(-4, st.transform.position.y, st.transform.position.z);
+            }
         }
     }
 

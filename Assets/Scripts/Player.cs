@@ -38,6 +38,7 @@ public class Player : MonoBehaviour
     public AudioClip clipShine;
     public AudioClip clipPause;
     public AudioClip clipJump;
+    public AudioClip clipScoreTick;
 
     public static int score = 0;
     public static int lives = 3;
@@ -45,6 +46,7 @@ public class Player : MonoBehaviour
     public static int stageDisplay = 1;
     public static int time = 99;
     public static int givePointsChain = 1;
+    public static int givePointsChainLinear = 0;
     public static int scoreForExtraLife = 8000;
     public static float sceneTime = 0;
 
@@ -107,6 +109,7 @@ public class Player : MonoBehaviour
         {
             animator.SetBool("MidAir", false);
             givePointsChain = 1;
+            givePointsChainLinear = 0;
 
             if (fallingTime > 1 && dead == false)
             {
@@ -145,12 +148,10 @@ public class Player : MonoBehaviour
             {
                 if (moveInputX > 0)
                 {
-                    //moveInputX = 0.0025f;
                     moveInputX = speedX * Time.deltaTime;
                 }
                 else if (moveInputX < 0)
                 {
-                    //moveInputX = -0.0025f;
                     moveInputX = -speedX * Time.deltaTime;
                 }
             }
@@ -419,8 +420,28 @@ public class Player : MonoBehaviour
 
         audioSource.PlayOneShot(clipWin);
 
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(3);
 
+        // Subtract timer to add score.
+        while (time > 0)
+        {
+            time--;
+            score += 10;
+            audioSource.PlayOneShot(clipScoreTick);
+
+            yield return new WaitForSeconds(0.06f);
+        }
+
+        if(time < 0)
+        {
+            time = 0;
+        }
+
+        SaveScore();
+
+        yield return new WaitForSeconds(2);
+
+        // Next stage.
         stage++;
         stageDisplay++;
 
@@ -508,13 +529,16 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(1);
         time--;
 
-        if(time <= 0)
+        if (dead == false && winLevel == false)
         {
-            Die();
-        }
-        else if(dead == false && winLevel == false)
-        {
-            StartCoroutine(Timer());
+            if (time <= 0)
+            {
+                Die();
+            }
+            else
+            {
+                StartCoroutine(Timer());
+            }
         }
     }
 }

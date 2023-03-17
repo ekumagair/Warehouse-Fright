@@ -66,7 +66,7 @@ public class Projectile : MonoBehaviour
         {
             if(pointsOnDestroy != 0)
             {
-                GameObject.Find("Global").GetComponent<GlobalScript>().AddPoints(pointsOnDestroy, true, transform);
+                GameObject.Find("Global").GetComponent<GlobalScript>().AddPoints(pointsOnDestroy, true, transform, false);
             }
             if(createOndestroy != null)
             {
