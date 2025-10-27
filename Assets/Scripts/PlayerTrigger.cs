@@ -7,8 +7,8 @@ public class PlayerTrigger : MonoBehaviour
     public AudioClip clipJumpOver;
     public AudioClip clipCollectItem;
 
-    Player playerScript;
-    AudioSource audioSource;
+    private Player playerScript;
+    private AudioSource audioSource;
 
     void Start()
     {
@@ -18,12 +18,12 @@ public class PlayerTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "Kill" || collision.gameObject.tag == "Ghost")
+        if (collision.gameObject.tag == "Kill" || collision.gameObject.tag == "Ghost")
         {
             playerScript.Die();
             Destroy(gameObject);
         }
-        else if(collision.gameObject.tag == "GivePoints" && Player.dead == false && Player.winLevel == false && playerScript.fallingTime < 1f)
+        else if (collision.gameObject.tag == "GivePoints" && Player.dead == false && Player.winLevel == false && playerScript.fallingTime < 1f)
         {
             audioSource.PlayOneShot(clipJumpOver);
             GameObject.Find("Global").GetComponent<GlobalScript>().AddPoints(100 * Player.givePointsChain, true, transform, true);
@@ -36,7 +36,7 @@ public class PlayerTrigger : MonoBehaviour
                 Player.givePointsChainLinear++;
             }
         }
-        else if(collision.gameObject.tag == "Item")
+        else if (collision.gameObject.tag == "Item")
         {
             audioSource.PlayOneShot(clipCollectItem);
             GameObject.Find("Global").GetComponent<GlobalScript>().AddPoints(1000, true, transform, false);
