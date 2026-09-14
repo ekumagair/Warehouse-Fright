@@ -18,15 +18,14 @@ public class Player : MonoBehaviour
     public bool isOnPlatform;
     public Transform ceilingCheck;
     public bool touchingCeiling;
-    RaycastHit2D rayHit;
-
+    
     public GameObject attackObject;
-    GameObject spawnedAttackObject;
+    private GameObject _spawnedAttackObject;
     public Vector3 attackPosition;
     public float attackTimerDefault;
-    float attackTimer = 0f;
+    private float _attackTimer = 0f;
 
-    bool touchingLadder = false;
+    private bool _touchingLadder = false;
     public static bool usingLadder = false;
     public static bool dead = false;
     public static bool winLevel = false;
@@ -50,21 +49,22 @@ public class Player : MonoBehaviour
     public static int scoreForExtraLife = 8000;
     public static float sceneTime = 0;
 
-    Rigidbody2D rb;
-    Animator animator;
-    SpriteRenderer spriteRenderer;
-    AudioSource audioSource;
+    private RaycastHit2D _rayHit;
+    private Rigidbody2D _rb;
+    private Animator _animator;
+    private SpriteRenderer _spriteRenderer;
+    private AudioSource _audioSource;
 
     void Start()
     {
         Time.timeScale = 1.0f;
 
-        rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        audioSource = GetComponent<AudioSource>();
+        _rb = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _audioSource = GetComponent<AudioSource>();
 
-        touchingLadder = false;
+        _touchingLadder = false;
         usingLadder = false;
         dead = false;
         winLevel = false;
@@ -77,9 +77,10 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        // Ground check
-        rayHit = Physics2D.BoxCast(groundCheck.transform.position, new Vector2(0.3f, 0.2f), 0, -transform.up, -0.5f, solidMask);
-        if (rayHit.collider == null)
+        // Ground check.
+        _rayHit = Physics2D.BoxCast(groundCheck.transform.position, new Vector2(0.3f, 0.2f), 0, -transform.up, -0.5f, solidMask);
+
+        if (_rayHit.collider == null)
         {
             isOnGround = false;
             isOnPlatform = false;
@@ -88,9 +89,9 @@ public class Player : MonoBehaviour
         {
             isOnGround = true;
 
-            if(rayHit.collider.gameObject.tag == "Platform" && rb.velocity.y >= 0)
+            if (_rayHit.collider.gameObject.tag == "Platform" && _rb.velocity.y >= 0)
             {
-                if (rayHit.collider.gameObject.GetComponent<Platform>().directionY < 0)
+                if (_rayHit.collider.gameObject.GetComponent<Platform>().directionY < 0)
                 {
                     isOnPlatform = true;
                 }
@@ -105,9 +106,9 @@ public class Player : MonoBehaviour
             }
         }
 
-        if(isOnGround)
+        if (isOnGround)
         {
-            animator.SetBool("MidAir", false);
+            _animator.SetBool("MidAir", false);
             givePointsChain = 1;
             givePointsChainLinear = 0;
 
@@ -122,12 +123,13 @@ public class Player : MonoBehaviour
         }
         else
         {
-            animator.SetBool("MidAir", true);
+            _animator.SetBool("MidAir", true);
         }
 
-        // Ceiling check
-        rayHit = Physics2D.BoxCast(ceilingCheck.transform.position, new Vector2(0.2f, 0.2f), 0, transform.up, 0.25f, solidMask);
-        if (rayHit.collider == null)
+        // Ceiling check.
+        _rayHit = Physics2D.BoxCast(ceilingCheck.transform.position, new Vector2(0.2f, 0.2f), 0, transform.up, 0.25f, solidMask);
+
+        if (_rayHit.collider == null)
         {
             touchingCeiling = false;
         }
@@ -136,10 +138,10 @@ public class Player : MonoBehaviour
             touchingCeiling = true;
         }
 
-        // Walk
+        // Walk.
         if (!usingLadder)
         {
-            if (isOnGround && attackTimer <= 0 && dead == false)
+            if (isOnGround && _attackTimer <= 0 && dead == false)
             {
                 moveInputX = Input.GetAxisRaw("Horizontal") * speedX * Time.deltaTime;
             }
@@ -157,23 +159,23 @@ public class Player : MonoBehaviour
             }
         }
 
-        // Ladder
-        if (Input.GetAxisRaw("Vertical") != 0 && touchingLadder && attackTimer <= 0 && isOnGround && dead == false && winLevel == false)
+        // Ladder.
+        if (Input.GetAxisRaw("Vertical") != 0 && _touchingLadder && _attackTimer <= 0 && isOnGround && dead == false && winLevel == false)
         {
             usingLadder = true;
-            rb.velocity = new Vector2(0, 0);
-            animator.Play("PlayerClimbIdle");
+            _rb.velocity = new Vector2(0, 0);
+            _animator.Play("PlayerClimbIdle");
         }
 
         if (usingLadder && dead == false)
         {
-            rb.gravityScale = 0.0f;
+            _rb.gravityScale = 0.0f;
             fallingTime = 0;
             moveInputX = Input.GetAxisRaw("Horizontal") * (speedX / 2) * Time.deltaTime;
             moveInputY = Input.GetAxisRaw("Vertical") * speedY * Time.deltaTime;
 
-            animator.SetBool("Climb", true);
-            animator.SetBool("ClimbMoving", moveInputX != 0 || moveInputY != 0);
+            _animator.SetBool("Climb", true);
+            _animator.SetBool("ClimbMoving", moveInputX != 0 || moveInputY != 0);
 
             if (((moveInputY > 0 && touchingCeiling == false) || (moveInputY < 0 && isOnGround == false)) && Time.timeScale != 0.0f)
             {
@@ -187,32 +189,32 @@ public class Player : MonoBehaviour
         }
         else
         {
-            animator.SetBool("Climb", false);
-            animator.SetBool("ClimbMoving", false);
+            _animator.SetBool("Climb", false);
+            _animator.SetBool("ClimbMoving", false);
 
             if (isOnPlatform == false)
             {
-                rb.gravityScale = 0.5f;
+                _rb.gravityScale = 0.5f;
             }
             else
             {
-                rb.gravityScale = 2f;
+                _rb.gravityScale = 2f;
             }
         }
 
-        // Wall check
+        // Wall check.
         if (moveInputX > 0)
         {
-            rayHit = Physics2D.BoxCast(transform.position, new Vector2(0.1f, 0.1f), 0, transform.right, 0.2f, solidMask);
-            if (rayHit.collider != null)
+            _rayHit = Physics2D.BoxCast(transform.position, new Vector2(0.1f, 0.1f), 0, transform.right, 0.2f, solidMask);
+            if (_rayHit.collider != null)
             {
                 moveInputX = 0;
             }
         }
         if (moveInputX < 0)
         {
-            rayHit = Physics2D.BoxCast(transform.position, new Vector2(0.1f, 0.1f), 0, -transform.right, 0.2f, solidMask);
-            if (rayHit.collider != null)
+            _rayHit = Physics2D.BoxCast(transform.position, new Vector2(0.1f, 0.1f), 0, -transform.right, 0.2f, solidMask);
+            if (_rayHit.collider != null)
             {
                 moveInputX = 0;
             }
@@ -221,90 +223,91 @@ public class Player : MonoBehaviour
         if (dead == false && winLevel == false && Time.timeScale != 0.0f)
         {
             transform.Translate(moveInputX, 0, 0);
-            animator.SetFloat("Walking", Mathf.Clamp01(Mathf.Abs(moveInputX)));
+            _animator.SetFloat("Walking", Mathf.Clamp01(Mathf.Abs(moveInputX)));
 
             if (moveInputX > 0)
             {
-                spriteRenderer.flipX = false;
+                _spriteRenderer.flipX = false;
             }
             else if (moveInputX < 0)
             {
-                spriteRenderer.flipX = true;
+                _spriteRenderer.flipX = true;
             }
         }
 
-        // Jump
-        if (Input.GetKeyDown(KeyCode.X) && isOnGround && attackTimer <= 0 && usingLadder == false && dead == false && winLevel == false)
+        // Jump.
+        if (Input.GetKeyDown(KeyCode.X) && isOnGround && _attackTimer <= 0 && usingLadder == false && dead == false && winLevel == false)
         {
-            rb.velocity = new Vector2(0, jumpForce);
+            _rb.velocity = new Vector2(0, jumpForce);
 
+            /*
             if (GlobalScript.debug)
             {
                 Debug.Log("Jump");
-            }
+            }*/
 
-            audioSource.PlayOneShot(clipJump);
+            _audioSource.PlayOneShot(clipJump);
         }
 
-        // Attack
-        if(Input.GetKeyDown(KeyCode.Z) && isOnGround && attackTimer <= 0 && usingLadder == false && dead == false && winLevel == false)
+        // Attack.
+        if (Input.GetKeyDown(KeyCode.Z) && isOnGround && _attackTimer <= 0 && usingLadder == false && dead == false && winLevel == false)
         {
-            spawnedAttackObject = Instantiate(attackObject, transform.position + new Vector3(attackPosition.x * FlipMultiplier(), attackPosition.y, 0), transform.rotation);
-            spawnedAttackObject.GetComponent<SpriteRenderer>().flipX = spriteRenderer.flipX;
-            spawnedAttackObject.transform.parent = transform;
-            attackTimer = 0.75f;
-            animator.Play("PlayerIdle");
+            _spawnedAttackObject = Instantiate(attackObject, transform.position + new Vector3(attackPosition.x * FlipMultiplier(), attackPosition.y, 0), transform.rotation);
+            _spawnedAttackObject.GetComponent<SpriteRenderer>().flipX = _spriteRenderer.flipX;
+            _spawnedAttackObject.transform.parent = transform;
+            _attackTimer = 0.75f;
+            _animator.Play("PlayerIdle");
 
-            audioSource.PlayOneShot(clipShine);
+            _audioSource.PlayOneShot(clipShine);
         }
 
-        if(attackTimer > 0)
+        if (_attackTimer > 0)
         {
-            attackTimer -= Time.deltaTime;
+            _attackTimer -= Time.deltaTime;
             moveInputX = 0;
         }
-        if(attackTimer < 0)
+        if (_attackTimer < 0)
         {
-            attackTimer = 0;
+            _attackTimer = 0;
         }
 
-        // Score
-        if(score < 0)
+        // Score.
+        if (score < 0)
         {
             score = 0;
         }
-        if(score > 99999999)
+        if (score > 99999999)
         {
             score = 99999999;
         }
 
-        // Extra life
-        if(score >= scoreForExtraLife)
+        // Extra life.
+        if (score >= scoreForExtraLife)
         {
             lives++;
             scoreForExtraLife += 8000;
         }
-        if(lives > 255)
+        if (lives > 255)
         {
             lives = 255;
         }
 
-        // Fall damage
-        if(rb.velocity.y < 0)
+        // Fall damage.
+        if (_rb.velocity.y < 0)
         {
             fallingTime += Time.deltaTime;
         }
 
-        // Bottomless pit
-        if(transform.position.y < -8)
+        // Bottomless pit.
+        if (transform.position.y < -8)
         {
             Die();
         }
 
-        // Pause
+        // Pause.
         if (Input.GetKeyDown(KeyCode.Return) && dead == false && winLevel == false && sceneTime > 1f)
         {
-            audioSource.PlayOneShot(clipPause);
+            _audioSource.PlayOneShot(clipPause);
 
             if (Time.timeScale != 0.0f)
             {
@@ -316,23 +319,23 @@ public class Player : MonoBehaviour
             }
         }
 
-        if(Time.timeScale == 0.0f)
+        if (Time.timeScale == 0.0f)
         {
-            if(Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.LeftShift))
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.LeftShift))
             {
                 SceneManager.LoadScene("MainMenu");
             }
         }
         else
         {
-            // Scene time
+            // Scene time.
             sceneTime += Time.deltaTime;
         }
 
-        // Debug
+        // Debug.
         if (GlobalScript.debug)
         {
-            if(Input.GetKeyDown(KeyCode.O))
+            if (Input.GetKeyDown(KeyCode.O))
             {
                 stageDisplay--;
                 stage--;
@@ -355,9 +358,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    int FlipMultiplier()
+    private int FlipMultiplier()
     {
-        if(spriteRenderer.flipX == false)
+        if (_spriteRenderer.flipX == false)
         {
             return 1;
         }
@@ -374,27 +377,27 @@ public class Player : MonoBehaviour
             Time.timeScale = 1.0f;
 
             usingLadder = false;
-            touchingLadder = false;
+            _touchingLadder = false;
             dead = true;
 
-            if (spawnedAttackObject != null)
+            if (_spawnedAttackObject != null)
             {
-                Destroy(spawnedAttackObject);
+                Destroy(_spawnedAttackObject);
             }
 
-            audioSource.PlayOneShot(clipLose);
+            _audioSource.PlayOneShot(clipLose);
 
-            animator.Play("PlayerDead");
+            _animator.Play("PlayerDead");
 
             lives--;
 
             DestroyAllObstacles();
-            StartCoroutine(GameObject.Find("Global").GetComponent<GlobalScript>().MajorDeath(gameObject, spriteRenderer, rb, false));
+            StartCoroutine(GlobalScript.Instance.MajorDeath(gameObject, _spriteRenderer, _rb, false));
             StartCoroutine(AfterDeath());
         }
     }
 
-    IEnumerator AfterDeath()
+    private IEnumerator AfterDeath()
     {
         yield return new WaitForSeconds(4);
 
@@ -418,7 +421,7 @@ public class Player : MonoBehaviour
         DestroyAllObstacles();
         SaveScore();
 
-        audioSource.PlayOneShot(clipWin);
+        _audioSource.PlayOneShot(clipWin);
 
         yield return new WaitForSeconds(3);
 
@@ -427,12 +430,12 @@ public class Player : MonoBehaviour
         {
             time--;
             score += 10;
-            audioSource.PlayOneShot(clipScoreTick);
+            _audioSource.PlayOneShot(clipScoreTick);
 
             yield return new WaitForSeconds(0.06f);
         }
 
-        if(time < 0)
+        if (time < 0)
         {
             time = 0;
         }
@@ -458,7 +461,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            if(stage > 5)
+            if (stage > 5)
             {
                 stage = 1;
 
@@ -466,7 +469,7 @@ public class Player : MonoBehaviour
                 {
                     GlobalScript.difficulty++;
                 }
-                if(GlobalScript.difficulty > 9)
+                if (GlobalScript.difficulty > 9)
                 {
                     GlobalScript.difficulty = 9;
                 }
@@ -476,7 +479,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    void DestroyAllObstacles()
+    private void DestroyAllObstacles()
     {
         GameObject[] everyObstacle = GameObject.FindGameObjectsWithTag("Kill");
 
@@ -486,7 +489,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    void SaveScore()
+    private void SaveScore()
     {
         if (GlobalScript.gameIsInfinite == false)
         {
@@ -505,13 +508,14 @@ public class Player : MonoBehaviour
 
         PlayerPrefs.SetInt("highScore_Normal", GlobalScript.highScoreNormal);
         PlayerPrefs.SetInt("highScore_Infinite", GlobalScript.highScoreInfinite);
+        PlayerPrefs.Save();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "Ladder")
+        if (collision.gameObject.tag == "Ladder")
         {
-            touchingLadder = true;
+            _touchingLadder = true;
         }
     }
 
@@ -519,12 +523,12 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ladder")
         {
-            touchingLadder = false;
+            _touchingLadder = false;
             usingLadder = false;
         }
     }
 
-    IEnumerator Timer()
+    private IEnumerator Timer()
     {
         yield return new WaitForSeconds(1);
         time--;

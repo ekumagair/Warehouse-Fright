@@ -11,22 +11,21 @@ public class Projectile : MonoBehaviour
     public int pointsOnDestroy = 0;
     public bool mirrorX = false;
     public GameObject createOndestroy;
-
     public LayerMask wallMask;
-    RaycastHit2D rayHit;
-    SpriteRenderer sr;
+
+    private RaycastHit2D _rayHit;
+    private SpriteRenderer _sr;
 
     void Start()
     {
-        sr = GetComponent<SpriteRenderer>();
+        _sr = GetComponent<SpriteRenderer>();
     }
-
 
     void Update()
     {
         transform.Translate(speedX * Time.deltaTime, speedY * Time.deltaTime, 0);
 
-        if(transform.position.x < -8 || transform.position.x > 8)
+        if (transform.position.x < -8 || transform.position.x > 8)
         {
             Destroy(gameObject);
         }
@@ -35,27 +34,27 @@ public class Projectile : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if(destroyedByWall)
+        if (destroyedByWall)
         {
-            if(speedX != 0)
+            if (speedX != 0)
             {
-                rayHit = Physics2D.BoxCast(transform.position + (transform.right * Mathf.Clamp(speedX, -0.25f, 0.25f)), new Vector2(0.05f, 0.05f), 0, -transform.up, 0f, wallMask);
-                if (rayHit.collider != null)
+                _rayHit = Physics2D.BoxCast(transform.position + (transform.right * Mathf.Clamp(speedX, -0.25f, 0.25f)), new Vector2(0.05f, 0.05f), 0, -transform.up, 0f, wallMask);
+                if (_rayHit.collider != null)
                 {
                     Destroy(gameObject);
                 }
             }
         }
 
-        if(mirrorX)
+        if (mirrorX)
         {
-            if(speedX > 0)
+            if (speedX > 0)
             {
-                sr.flipX = true;
+                _sr.flipX = true;
             }
             else
             {
-                sr.flipX = false;
+                _sr.flipX = false;
             }
         }
     }
@@ -64,11 +63,11 @@ public class Projectile : MonoBehaviour
     {
         if (collision.gameObject.tag == "Light" && destroyedByLight)
         {
-            if(pointsOnDestroy != 0)
+            if (pointsOnDestroy != 0)
             {
-                GameObject.Find("Global").GetComponent<GlobalScript>().AddPoints(pointsOnDestroy, true, transform, false);
+                GlobalScript.Instance.AddPoints(pointsOnDestroy, true, transform, false);
             }
-            if(createOndestroy != null)
+            if (createOndestroy != null)
             {
                 Instantiate(createOndestroy, transform.position, transform.rotation);
             }

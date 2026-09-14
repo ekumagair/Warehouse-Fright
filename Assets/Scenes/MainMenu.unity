@@ -156,7 +156,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 270.0011, y: -570.00226}
+  m_AnchoredPosition: {x: 270, y: -570}
   m_SizeDelta: {x: 720, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &20292240
@@ -1291,6 +1291,85 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 212649827}
   m_CullTransparentMesh: 1
+--- !u!1 &232267946
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 232267947}
+  - component: {fileID: 232267949}
+  - component: {fileID: 232267948}
+  m_Layer: 5
+  m_Name: Version
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &232267947
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 232267946}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 877407358}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 270.0011, y: -570.00226}
+  m_SizeDelta: {x: 720, y: 64}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &232267948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 232267946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: bd8ce7a9797dd18408f41fd7e36eff41, type: 3}
+    m_FontSize: 48
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 300
+    m_Alignment: 5
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: VERSION 1.2.1
+--- !u!222 &232267949
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 232267946}
+  m_CullTransparentMesh: 1
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1559,6 +1638,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 20292239}
+  - {fileID: 232267947}
   - {fileID: 694004666}
   - {fileID: 967035395}
   - {fileID: 212649828}
@@ -1583,6 +1663,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectArrow: {fileID: 1110145405}
   highScoreText: {fileID: 212649829}
+  creditText: {fileID: 20292240}
+  versionText: {fileID: 232267948}
   clipSelect: {fileID: 8300000, guid: 9ff1a791e4d68df4b8556d0fd9f2f671, type: 3}
   clipDelete: {fileID: 8300000, guid: a349f117075dae04fa988748d1bfa013, type: 3}
 --- !u!82 &877407360
@@ -1681,6 +1763,71 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &904532026
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 904532028}
+  - component: {fileID: 904532027}
+  m_Layer: 0
+  m_Name: CheatCodeVersion
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &904532027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904532026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 535d55e769295c34980a7d6ced83d469, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  once: 0
+  buttons: 76000000650000007200000073000000690000006f0000006e000000
+  currentButton: 0
+  cheatExtraLives: 0
+  cheatContinue: 0
+  cheatDifficulty: 0
+  onCheatTyped:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 877407359}
+        m_TargetAssemblyTypeName: MainMenuScript, Assembly-CSharp
+        m_MethodName: ToggleVersion
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!4 &904532028
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904532026}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &967035394
 GameObject:
   m_ObjectHideFlags: 0
@@ -1789,12 +1936,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 535d55e769295c34980a7d6ced83d469, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cheatExtraLives: 1
-  cheatContinue: 0
-  cheatDifficulty: 0
   once: 1
   buttons: 11010000110100001201000012010000140100001301000014010000130100007a00000078000000
   currentButton: 0
+  cheatExtraLives: 1
+  cheatContinue: 0
+  cheatDifficulty: 0
+  onCheatTyped:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1002166994
 Transform:
   m_ObjectHideFlags: 0
@@ -2075,12 +2225,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 535d55e769295c34980a7d6ced83d469, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cheatExtraLives: 0
-  cheatContinue: 0
-  cheatDifficulty: 1
   once: 1
   buttons: 7a0000007a00000014010000780000007800000013010000
   currentButton: 0
+  cheatExtraLives: 0
+  cheatContinue: 0
+  cheatDifficulty: 1
+  onCheatTyped:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1880508119
 Transform:
   m_ObjectHideFlags: 0
@@ -2269,3 +2422,4 @@ SceneRoots:
   - {fileID: 1719633515617997714}
   - {fileID: 1002166994}
   - {fileID: 1880508119}
+  - {fileID: 904532028}

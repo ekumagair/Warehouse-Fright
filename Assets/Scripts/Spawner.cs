@@ -15,11 +15,11 @@ public class Spawner : MonoBehaviour
     {
         objAmount += GlobalScript.difficulty;
 
-        if(objAmount > objLimit)
+        if (objAmount > objLimit)
         {
             objAmount = objLimit;
         }
-        if(objAmount < 1)
+        if (objAmount < 1)
         {
             Destroy(gameObject);
         }
@@ -27,7 +27,7 @@ public class Spawner : MonoBehaviour
         StartCoroutine(Create());
     }
 
-    IEnumerator Create()
+    private IEnumerator Create()
     {
         yield return new WaitForSeconds(delay * 0.2f);
 
@@ -35,7 +35,7 @@ public class Spawner : MonoBehaviour
         {
             var inst = Instantiate(obj, transform.position, transform.rotation);
 
-            if(inst.GetComponent<Projectile>() != null)
+            if (inst.GetComponent<Projectile>() != null)
             {
                 inst.GetComponent<Projectile>().speedX *= directionX;
             }

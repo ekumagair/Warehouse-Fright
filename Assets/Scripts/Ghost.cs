@@ -5,34 +5,35 @@ using UnityEngine;
 public class Ghost : MonoBehaviour
 {
     public GameObject projectile;
-    GameObject target;
 
-    Animator animator;
-    SpriteRenderer sr;
-    Rigidbody2D rb;
+    private GameObject _target;
+    private Animator _animator;
+    private SpriteRenderer _sr;
+    private Rigidbody2D _rb;
 
     void Start()
     {
-        target = GameObject.FindGameObjectWithTag("Player");
-        animator = GetComponent<Animator>();
-        sr = GetComponent<SpriteRenderer>();
-        rb = GetComponent<Rigidbody2D>();
+        _target = GameObject.FindGameObjectWithTag("Player");
+        _animator = GetComponent<Animator>();
+        _sr = GetComponent<SpriteRenderer>();
+        _rb = GetComponent<Rigidbody2D>();
+
         StartCoroutine(AttackLoop());
     }
 
     void Update()
     {
-        if(target.transform.position.x > transform.position.x)
+        if (_target.transform.position.x > transform.position.x)
         {
-            sr.flipX = true;
+            _sr.flipX = true;
         }
         else
         {
-            sr.flipX = false;
+            _sr.flipX = false;
         }
     }
 
-    IEnumerator AttackLoop()
+    private IEnumerator AttackLoop()
     {
         yield return new WaitForSeconds(3f);
 
@@ -47,23 +48,23 @@ public class Ghost : MonoBehaviour
     {
         var shot = Instantiate(projectile, transform.position, transform.rotation);
 
-        if (sr.flipX == false)
+        if (_sr.flipX == false)
         {
             shot.GetComponent<Projectile>().speedX *= -1;
         }
 
-        animator.Play("GhostAttack");
+        _animator.Play("GhostAttack");
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Light" && Player.winLevel == false)
         {
-            animator.Play("GhostDefeat");
+            _animator.Play("GhostDefeat");
 
-            GameObject.Find("Global").GetComponent<GlobalScript>().AddPoints(2000 + (500 * GlobalScript.difficulty), true, transform, false);
-            target.GetComponent<Player>().StartCoroutine(target.GetComponent<Player>().Win());
-            StartCoroutine(GameObject.Find("Global").GetComponent<GlobalScript>().MajorDeath(gameObject, sr, rb, true));
+            GlobalScript.Instance.AddPoints(2000 + (500 * GlobalScript.difficulty), true, transform, false);
+            _target.GetComponent<Player>().StartCoroutine(_target.GetComponent<Player>().Win());
+            StartCoroutine(GlobalScript.Instance.MajorDeath(gameObject, _sr, _rb, true));
             Player.winLevel = true;
         }
     }

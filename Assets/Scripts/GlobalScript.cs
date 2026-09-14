@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class GlobalScript : MonoBehaviour
 {
+    public static GlobalScript Instance { private set; get; }
+
     public GameObject scoreText;
 
     public static int difficulty = 0;
@@ -12,14 +14,19 @@ public class GlobalScript : MonoBehaviour
     public static int highScoreNormal = 0;
     public static int highScoreInfinite = 0;
 
-    // Debug mode
+    // Debug mode.
     public static bool debug = false;
+
+    void Awake()
+    {
+        Instance = this;
+    }
 
     public void AddPoints(int points, bool createText, Transform baseTransform, bool avoidOverlap)
     {
         Player.score += points;
 
-        if(createText)
+        if (createText)
         {
             var st = Instantiate(scoreText, baseTransform.position, baseTransform.rotation);
             st.transform.SetParent(GameObject.Find("Canvas").transform, false);
@@ -60,7 +67,7 @@ public class GlobalScript : MonoBehaviour
         rb.constraints = RigidbodyConstraints2D.None;
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
-        if(destroyAfterEnd)
+        if (destroyAfterEnd)
         {
             Destroy(caller);
         }

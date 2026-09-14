@@ -16,13 +16,13 @@ public class HUD : MonoBehaviour
     public GameObject fakeLoadTop;
     public GameObject fakeLoadBottom;
 
-    AudioSource musicAudioSource;
-    Player playerScript;
+    private AudioSource _musicAudioSource;
+    private Player _playerScript;
 
     void Start()
     {
-        musicAudioSource = musicObject.GetComponent<AudioSource>();
-        playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        _musicAudioSource = musicObject.GetComponent<AudioSource>();
+        _playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
 
         if (fakeLoadTop != null && fakeLoadBottom != null)
         {
@@ -53,21 +53,21 @@ public class HUD : MonoBehaviour
         }
 
         // Stop music
-        if((Player.dead == true || Player.winLevel == true) && musicObject != null)
+        if ((Player.dead == true || Player.winLevel == true) && musicObject != null)
         {
             Destroy(musicObject);
         }
 
         // Pause music
-        if (musicAudioSource != null)
+        if (_musicAudioSource != null)
         {
             if (Time.timeScale != 0.0f)
             {
-                musicAudioSource.UnPause();
+                _musicAudioSource.UnPause();
             }
             else
             {
-                musicAudioSource.Pause();
+                _musicAudioSource.Pause();
             }
         }
 

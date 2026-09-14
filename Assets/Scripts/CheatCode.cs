@@ -1,16 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class CheatCode : MonoBehaviour
 {
+    [Header("Properties")]
+    public bool once = true;
+
+    [Header("Input")]
+    public KeyCode[] buttons;
+    public int currentButton;
+
+    [Header("Cheat Effects")]
     public bool cheatExtraLives = false;
     public bool cheatContinue = false;
     public bool cheatDifficulty = false;
-    public bool once = true;
-    public KeyCode[] buttons;
-    public int currentButton;
+    public UnityEvent onCheatTyped;
 
     void Start()
     {
@@ -20,13 +27,14 @@ public class CheatCode : MonoBehaviour
     void OnGUI()
     {
         Event e = Event.current;
+
         if (e.isKey && Event.current.type == EventType.KeyUp)
         {
-            if(buttons[currentButton] == e.keyCode)
+            if (buttons[currentButton] == e.keyCode)
             {
                 currentButton++;
 
-                if(currentButton == buttons.Length)
+                if (currentButton == buttons.Length)
                 {
                     if (GlobalScript.debug == true)
                     {
@@ -35,11 +43,11 @@ public class CheatCode : MonoBehaviour
 
                     currentButton = 0;
 
-                    if(cheatExtraLives == true)
+                    if (cheatExtraLives == true)
                     {
                         Player.lives = 30;
                     }
-                    if(cheatContinue == true && GlobalScript.gameIsInfinite == false)
+                    if (cheatContinue == true && GlobalScript.gameIsInfinite == false)
                     {
                         Player.score = 0;
                         Player.lives = 3;
@@ -47,21 +55,24 @@ public class CheatCode : MonoBehaviour
                         Player.sceneTime = 0;
                         SceneManager.LoadScene("Stage" + Player.stage);
                     }
-                    if(cheatDifficulty == true)
+                    if (cheatDifficulty == true)
                     {
                         GlobalScript.difficulty = 9;
                     }
 
-                    if(GetComponent<AudioSource>() != null)
+                    onCheatTyped?.Invoke();
+
+                    if (GetComponent<AudioSource>() != null)
                     {
                         GetComponent<AudioSource>().Play();
                     }
 
-                    if(once == true)
+                    if (once == true)
                     {
                         cheatExtraLives = false;
                         cheatContinue = false;
                         cheatDifficulty = false;
+                        onCheatTyped = null;
                     }
                 }
             }

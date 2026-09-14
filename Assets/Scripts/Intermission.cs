@@ -26,13 +26,13 @@ public class Intermission : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.Return))
         {
             GoToScene();
         }
     }
 
-    IEnumerator Continue()
+    private IEnumerator Continue()
     {
         yield return new WaitForSeconds(wait);
 

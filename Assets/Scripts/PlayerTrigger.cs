@@ -7,26 +7,26 @@ public class PlayerTrigger : MonoBehaviour
     public AudioClip clipJumpOver;
     public AudioClip clipCollectItem;
 
-    private Player playerScript;
-    private AudioSource audioSource;
+    private Player _playerScript;
+    private AudioSource _audioSource;
 
     void Start()
     {
-        playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-        audioSource = GetComponent<AudioSource>();
+        _playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Kill" || collision.gameObject.tag == "Ghost")
         {
-            playerScript.Die();
+            _playerScript.Die();
             Destroy(gameObject);
         }
-        else if (collision.gameObject.tag == "GivePoints" && Player.dead == false && Player.winLevel == false && playerScript.fallingTime < 1f)
+        else if (collision.gameObject.tag == "GivePoints" && Player.dead == false && Player.winLevel == false && _playerScript.fallingTime < 1f)
         {
-            audioSource.PlayOneShot(clipJumpOver);
-            GameObject.Find("Global").GetComponent<GlobalScript>().AddPoints(100 * Player.givePointsChain, true, transform, true);
+            _audioSource.PlayOneShot(clipJumpOver);
+            GlobalScript.Instance.AddPoints(100 * Player.givePointsChain, true, transform, true);
 
             if (Player.usingLadder == false)
             {
@@ -38,8 +38,8 @@ public class PlayerTrigger : MonoBehaviour
         }
         else if (collision.gameObject.tag == "Item")
         {
-            audioSource.PlayOneShot(clipCollectItem);
-            GameObject.Find("Global").GetComponent<GlobalScript>().AddPoints(1000, true, transform, false);
+            _audioSource.PlayOneShot(clipCollectItem);
+            GlobalScript.Instance.AddPoints(1000, true, transform, false);
             Destroy(collision.gameObject);
         }
     }
