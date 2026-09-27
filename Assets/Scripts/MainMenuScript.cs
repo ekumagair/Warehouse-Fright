@@ -110,7 +110,7 @@ public class MainMenuScript : MonoBehaviour
             _delete = 0;
         }
 
-#if UNITY_STANDALONE && !UNITY_WEBGL
+#if !UNITY_EDITOR && !UNITY_WEBGL && UNITY_STANDALONE
         // Quit game.
         if (Input.GetKeyDown(KeyCode.Escape))
         {

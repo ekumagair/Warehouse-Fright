@@ -321,6 +321,7 @@ public class Player : MonoBehaviour
 
         if (Time.timeScale == 0.0f)
         {
+            // Quit while paused.
             if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.LeftShift))
             {
                 SceneManager.LoadScene("MainMenu");

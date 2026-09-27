@@ -32,8 +32,10 @@ public class CheatCode : MonoBehaviour
         {
             if (buttons[currentButton] == e.keyCode)
             {
+                // Check next key.
                 currentButton++;
 
+                // If typed every key.
                 if (currentButton == buttons.Length)
                 {
                     if (GlobalScript.debug == true)
@@ -41,45 +43,50 @@ public class CheatCode : MonoBehaviour
                         Debug.Log("Finished code");
                     }
 
-                    currentButton = 0;
-
-                    if (cheatExtraLives == true)
-                    {
-                        Player.lives = 30;
-                    }
-                    if (cheatContinue == true && GlobalScript.gameIsInfinite == false)
-                    {
-                        Player.score = 0;
-                        Player.lives = 3;
-                        Player.scoreForExtraLife = 8000;
-                        Player.sceneTime = 0;
-                        SceneManager.LoadScene("Stage" + Player.stage);
-                    }
-                    if (cheatDifficulty == true)
-                    {
-                        GlobalScript.difficulty = 9;
-                    }
-
-                    onCheatTyped?.Invoke();
-
-                    if (GetComponent<AudioSource>() != null)
-                    {
-                        GetComponent<AudioSource>().Play();
-                    }
-
-                    if (once == true)
-                    {
-                        cheatExtraLives = false;
-                        cheatContinue = false;
-                        cheatDifficulty = false;
-                        onCheatTyped = null;
-                    }
+                    ExecuteEffect();
                 }
             }
             else
             {
                 currentButton = 0;
             }
+        }
+    }
+
+    private void ExecuteEffect()
+    {
+        currentButton = 0;
+
+        if (cheatExtraLives == true)
+        {
+            Player.lives = 30;
+        }
+        if (cheatContinue == true && GlobalScript.gameIsInfinite == false)
+        {
+            Player.score = 0;
+            Player.lives = 3;
+            Player.scoreForExtraLife = 8000;
+            Player.sceneTime = 0;
+            SceneManager.LoadScene("Stage" + Player.stage);
+        }
+        if (cheatDifficulty == true)
+        {
+            GlobalScript.difficulty = 9;
+        }
+
+        onCheatTyped?.Invoke();
+
+        if (GetComponent<AudioSource>() != null)
+        {
+            GetComponent<AudioSource>().Play();
+        }
+
+        if (once == true)
+        {
+            cheatExtraLives = false;
+            cheatContinue = false;
+            cheatDifficulty = false;
+            onCheatTyped = null;
         }
     }
 }
